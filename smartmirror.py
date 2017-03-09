@@ -98,14 +98,30 @@ class Clock(Frame):
 class News(Frame):
     def __init__(self,parent):
         Frame.__init__(self,parent,bg="black")
+        image = Image.open("assets/Newspaper.png")
+        image = image.resize((50,50),Image.ANTIALIAS)
+        image = image.convert("RGB")
+        photo = ImageTk.PhotoImage(image)
+        
         text = "hier kommen die News hin"
         self.textlbl = Label(self,text= text, font=("Helvetica", small_text_size), fg="white", bg="black")
         self.textlbl.pack(side=BOTTOM, anchor=E)
 
-
+        self.iconLbl = Label(self, bg='black', image=photo)
+        self.iconLbl.image = photo
+        self.iconLbl.pack(side=BOTTOM, anchor=N)
+      
 class Weather(Frame):
     def __init__(self,parent):
         Frame.__init__(self,parent,bg="black")
+        image = Image.open("assets/Sun.png")
+        image = image.resize((100, 100), Image.ANTIALIAS)
+        image = image.convert('RGB')
+        photo = ImageTk.PhotoImage(image)
+        self.iconLbl = Label(self, bg='black', image=photo)
+        self.iconLbl.image = photo
+        self.iconLbl.pack(side=LEFT, anchor=N)
+        
         text = "hier wird das Wetter angezeigt"
         self.textlbl = Label(self, text = text, font=("Helvetica", small_text_size), fg="white", bg="black")
         self.textlbl.pack(side=TOP, anchor=E)
