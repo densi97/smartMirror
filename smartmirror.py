@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # smartmirror.py
 # requirements
 # requests, feedparser, traceback, Pillow
@@ -10,6 +11,7 @@ import requests
 import json
 import traceback
 import feedparser
+import urllib2
 
 from PIL import Image, ImageTk
 from contextlib import contextmanager
@@ -25,6 +27,7 @@ xlarge_text_size = 94
 large_text_size = 48
 medium_text_size = 28
 small_text_size = 18
+apikey = "0152bf426c1189562d39dfe4d04cee99"
 
 @contextmanager
 def setlocale(name): #thread proof function to work with locale
@@ -114,7 +117,24 @@ class News(Frame):
 class Weather(Frame):
     def __init__(self,parent):
         Frame.__init__(self,parent,bg="black")
-        image = Image.open("assets/Sun.png")
+        anfrage = urllib2.urlopen("http://api.openweathermap.org/data/2.5/weather?q=Konz,de&appid=" + apikey)
+        data = json.load(anfrage)
+        if data['weather'][0]['description'] == "clear sky":
+            image = Image.open("assets/Sun.png")
+            wettervs = "sonnig"
+        elif data['weather'][0]['description'] == "rain":
+            image = Image.open("assets/Rain.png")
+            wettervs = "regnerisch"
+        elif data['weather'][0]['description'] == "snow":
+            image = Image.open("assets/Snow.png")
+            wettervs = "verschneit"
+        elif data['weather'][0]['description'] == "few clouds":
+            image = Image.open("assets/PartlySunny.png")
+            wettervs = "bewoelkt"
+        else:
+            image = Image.open("assets/Cloud.png")
+            wettervs = "wolkig"
+        
         image = image.resize((100, 100), Image.ANTIALIAS)
         image = image.convert('RGB')
         photo = ImageTk.PhotoImage(image)
@@ -122,9 +142,17 @@ class Weather(Frame):
         self.iconLbl.image = photo
         self.iconLbl.pack(side=LEFT, anchor=N)
         
-        text = "hier wird das Wetter angezeigt"
-        self.textlbl = Label(self, text = text, font=("Helvetica", small_text_size), fg="white", bg="black")
+        text = data['name']
+        self.textlbl = Label(self, text = text,width= 100, font=("Helvetica", small_text_size), fg="white", bg="black")
         self.textlbl.pack(side=TOP, anchor=E)
+
+        wetter = "Das Wetter ist: " + wettervs
+        self.wetterlbl = Label(self, text = wetter,width= 100, font=("Helvetica", small_text_size), fg="white", bg="black")
+        self.wetterlbl.pack(side=TOP, anchor=E)
+
+        temperatur ="Die aktuelle Temperatur betraegt: " + str(data['main']['temp'])
+        self.templbl = Label(self, text = temperatur,width= 100, font=("Helvetica", small_text_size), fg="white", bg="black")
+        self.templbl.pack(side=TOP, anchor=E)
         
 
 class FullscreenWindow:
