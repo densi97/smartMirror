@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 # -*- coding: utf-8 -*-
-=======
->>>>>>> 2898a5eae382c3a6e440c2dcb21655b3ff661b45
 # smartmirror.py
 # requirements
 # requests, feedparser, traceback, Pillow
@@ -14,10 +11,7 @@ import requests
 import json
 import traceback
 import feedparser
-<<<<<<< HEAD
 import urllib2
-=======
->>>>>>> 2898a5eae382c3a6e440c2dcb21655b3ff661b45
 
 from PIL import Image, ImageTk
 from contextlib import contextmanager
@@ -33,10 +27,7 @@ xlarge_text_size = 94
 large_text_size = 48
 medium_text_size = 28
 small_text_size = 18
-<<<<<<< HEAD
 apikey = "0152bf426c1189562d39dfe4d04cee99"
-=======
->>>>>>> 2898a5eae382c3a6e440c2dcb21655b3ff661b45
 
 @contextmanager
 def setlocale(name): #thread proof function to work with locale
@@ -110,19 +101,15 @@ class Clock(Frame):
 class News(Frame):
     def __init__(self,parent):
         Frame.__init__(self,parent,bg="black")
-<<<<<<< HEAD
         image = Image.open("assets/Newspaper.png")
         image = image.resize((50,50),Image.ANTIALIAS)
         image = image.convert("RGB")
         photo = ImageTk.PhotoImage(image)
         
-=======
->>>>>>> 2898a5eae382c3a6e440c2dcb21655b3ff661b45
         text = "hier kommen die News hin"
         self.textlbl = Label(self,text= text, font=("Helvetica", small_text_size), fg="white", bg="black")
         self.textlbl.pack(side=BOTTOM, anchor=E)
 
-<<<<<<< HEAD
         self.iconLbl = Label(self, bg='black', image=photo)
         self.iconLbl.image = photo
         self.iconLbl.pack(side=BOTTOM, anchor=N)
@@ -166,15 +153,6 @@ class Weather(Frame):
         temperatur ="Die aktuelle Temperatur betraegt: " + str(data['main']['temp'])
         self.templbl = Label(self, text = temperatur,width= 100, font=("Helvetica", small_text_size), fg="white", bg="black")
         self.templbl.pack(side=TOP, anchor=E)
-=======
-
-class Weather(Frame):
-    def __init__(self,parent):
-        Frame.__init__(self,parent,bg="black")
-        text = "hier wird das Wetter angezeigt"
-        self.textlbl = Label(self, text = text, font=("Helvetica", small_text_size), fg="white", bg="black")
-        self.textlbl.pack(side=TOP, anchor=E)
->>>>>>> 2898a5eae382c3a6e440c2dcb21655b3ff661b45
         
 
 class FullscreenWindow:
@@ -216,3 +194,4 @@ class FullscreenWindow:
 if __name__ == '__main__':
     w = FullscreenWindow()
     w.tk.mainloop()
+
