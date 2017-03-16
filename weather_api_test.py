@@ -26,5 +26,7 @@ else:
 
 print (data['name'])
 print ("Das Wetter in Konz ist: " + data['weather'][0]['description'])
-print ("Die aktuelle Temperatur betraegt: " + str(data['main']['temp']))
-
+tmp = data['main']['temp'] - 273.15
+temp = int(tmp)
+print(str(temp))
+#print ("Die aktuelle Temperatur betraegt: " + str(tmp))

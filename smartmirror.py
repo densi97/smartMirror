@@ -19,7 +19,7 @@ from contextlib import contextmanager
 LOCALE_LOCK = threading.Lock()
 
 ui_locale = '' # e.g. 'fr_FR' fro French, '' as default
-time_format = 12 # 12 or 24
+time_format = 24 # 12 or 24
 date_format = "%b %d, %Y" # check python doc for strftime() for options
 latitude = None # Set this if IP location lookup does not work for you (must be a string)
 longitude = None # Set this if IP location lookup does not work for you (must be a string)
@@ -105,14 +105,37 @@ class News(Frame):
         image = image.resize((50,50),Image.ANTIALIAS)
         image = image.convert("RGB")
         photo = ImageTk.PhotoImage(image)
-        
-        text = "hier kommen die News hin"
+
+        #bild
+        data_bild = self.anfrage("bild")
+
+        #skysportsnews
+        data_sky = self.anfrage("sky-sports-news")
+
+        for i in range(3):
+            text = data_bild['articles'][i]['title']
+            self.textlbl = Label(self,text= text, font=("Helvetica", small_text_size), fg="white", bg="black")
+            self.textlbl.pack(side=BOTTOM, anchor=N)
+
+        text = ""
         self.textlbl = Label(self,text= text, font=("Helvetica", small_text_size), fg="white", bg="black")
         self.textlbl.pack(side=BOTTOM, anchor=E)
 
+        for i in range(3):
+            text = data_sky['articles'][i]['title']
+            self.textlbl = Label(self,text= text, font=("Helvetica", small_text_size), fg="white", bg="black")
+            self.textlbl.pack(side=BOTTOM, anchor=N)
+        
         self.iconLbl = Label(self, bg='black', image=photo)
         self.iconLbl.image = photo
         self.iconLbl.pack(side=BOTTOM, anchor=N)
+
+    def anfrage(self, source):
+        apikey = "b09b49674e484230a8c3fd17f4f83458"
+        hostname = "https://newsapi.org/v1/articles?source="
+        url = hostname + str(source) + "&sortBy=top" + "&apiKey="  + apikey
+        anfrage = urllib2.urlopen(url)
+        return json.load(anfrage)
       
 class Weather(Frame):
     def __init__(self,parent):
@@ -150,7 +173,8 @@ class Weather(Frame):
         self.wetterlbl = Label(self, text = wetter,width= 100, font=("Helvetica", small_text_size), fg="white", bg="black")
         self.wetterlbl.pack(side=TOP, anchor=E)
 
-        temperatur ="Die aktuelle Temperatur betraegt: " + str(data['main']['temp'])
+        tmp = int(data['main']['temp'] - 273.15)
+        temperatur ="Die aktuelle Temperatur betraegt: " + str(tmp) + "°C"
         self.templbl = Label(self, text = temperatur,width= 100, font=("Helvetica", small_text_size), fg="white", bg="black")
         self.templbl.pack(side=TOP, anchor=E)
         
