@@ -19,4 +19,5 @@ print("Das sind die Bild Nachrichten!")
 for i in range(3):
     print(str(i+1) + " " + data_bild['articles'][i]['title'])
     print(data_bild['articles'][i]['description'])
+    print("")
     

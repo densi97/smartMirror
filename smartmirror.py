@@ -109,27 +109,11 @@ class News(Frame):
         #bild
         data_bild = self.anfrage("bild")
 
-        #skysportsnews
-        data_sky = self.anfrage("sky-sports-news")
-
-        for i in range(3):
-            text = data_bild['articles'][i]['title']
+        for i in range(5):
+            text = str(i+1) +". " + data_bild['articles'][i]['title']
             self.textlbl = Label(self,text= text, font=("Helvetica", small_text_size), fg="white", bg="black")
-            self.textlbl.pack(side=BOTTOM, anchor=N)
-
-        text = ""
-        self.textlbl = Label(self,text= text, font=("Helvetica", small_text_size), fg="white", bg="black")
-        self.textlbl.pack(side=BOTTOM, anchor=E)
-
-        for i in range(3):
-            text = data_sky['articles'][i]['title']
-            self.textlbl = Label(self,text= text, font=("Helvetica", small_text_size), fg="white", bg="black")
-            self.textlbl.pack(side=BOTTOM, anchor=N)
-        
-        self.iconLbl = Label(self, bg='black', image=photo)
-        self.iconLbl.image = photo
-        self.iconLbl.pack(side=BOTTOM, anchor=N)
-
+            self.textlbl.pack(side=TOP, anchor=W, pady=10)
+            
     def anfrage(self, source):
         apikey = "b09b49674e484230a8c3fd17f4f83458"
         hostname = "https://newsapi.org/v1/articles?source="
@@ -174,7 +158,7 @@ class Weather(Frame):
         self.wetterlbl.pack(side=TOP, anchor=E)
 
         tmp = int(data['main']['temp'] - 273.15)
-        temperatur ="Die aktuelle Temperatur betraegt: " + str(tmp) + "°C"
+        temperatur ="Die aktuelle Temperatur beträgt: " + str(tmp) + "°C"
         self.templbl = Label(self, text = temperatur,width= 100, font=("Helvetica", small_text_size), fg="white", bg="black")
         self.templbl.pack(side=TOP, anchor=E)
         
@@ -184,12 +168,14 @@ class FullscreenWindow:
     def __init__(self):
         self.tk = Tk()
         self.tk.configure(background='black')
+        self.tk.title("Mein SmartMirror")
         self.topFrame = Frame(self.tk, background = 'black')
         self.bottomFrame = Frame(self.tk, background = 'black')
         self.topFrame.pack(side = TOP, fill=BOTH, expand = YES)
         self.bottomFrame.pack(side = BOTTOM, fill=BOTH, expand = YES)
         self.state = False
         self.tk.bind("<Return>", self.toggle_fullscreen)
+        self.tk.bind("<KP_Enter>", self.toggle_fullscreen)
         self.tk.bind("<Escape>", self.end_fullscreen)
         # clock
         self.clock = Clock(self.topFrame)
@@ -199,11 +185,7 @@ class FullscreenWindow:
         self.weather.pack(side=LEFT, anchor=N, padx=100, pady=100)
         # news
         self.news = News(self.bottomFrame)
-        self.news.pack(side= BOTTOM, anchor=N, padx=150, pady=100)
-        
-        # calender - removing for now
-        # self.calender = Calendar(self.bottomFrame)
-        # self.calender.pack(side = RIGHT, anchor=S, padx=100, pady=60)
+        self.news.pack(side=BOTTOM, anchor=N, padx=200, pady=100)
 
     def toggle_fullscreen(self, event=None):
         self.state = not self.state  # Just toggling the boolean
