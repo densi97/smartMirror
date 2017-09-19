@@ -14,15 +14,9 @@ def anfrage(source):
 #bild
 data_bild = anfrage("bild")
 
-#skysportsnews
-data_sky = anfrage("sky-sports-news")
-
 #ausgabe
-print("Das sind die Sport-Nachrichten!")
-for i in range(5):
-    print(str(i+1) + " " + data_sky['articles'][i]['title'])
-print("")
 print("Das sind die Bild Nachrichten!")
-for i in range(5):
+for i in range(3):
     print(str(i+1) + " " + data_bild['articles'][i]['title'])
+    print(data_bild['articles'][i]['description'])
     
